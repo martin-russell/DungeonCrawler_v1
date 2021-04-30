@@ -65,12 +65,13 @@ class Player {
 
     // player methods
     public void showInventory(){
-        System.out.println("INVENTORY:");
+        System.out.println("\nINVENTORY:");
         for (int i = 0; i<this.inventory.length;i++){
             if(this.inventory[i] == null){
                 System.out.println((i+1) + ": ....................");
             } else {
-                System.out.println((i+1) + " : " + this.inventory[i].name + " = " + this.inventory[i].description);
+                System.out.print((i+1) + ": ");
+                this.inventory[i].about();
             }
         }
         System.out.println("\nWEAPONS:");
@@ -78,7 +79,8 @@ class Player {
             if(this.inventory[i] == null){
                 System.out.println((i+1) + ": ....................");
             } else {
-                System.out.println((i+1) + " : " + this.weapons[i].name + " = " + this.weapons[i].description);
+                System.out.print((i+1) + ": ");
+                this.weapons[i].about();
             }
         }
     }
@@ -138,10 +140,10 @@ class Player {
                         // add the item to the inventory or weapons
                         System.out.println(this.currentLocation.items[selection].getClass());
                         if (this.currentLocation.items[selection].getClass() == Weapon.class) {
-                            System.out.println("Its a weapon");
+                            //System.out.println("Its a weapon");
                             this.weapons[weaponCount] = this.currentLocation.items[selection];
                         } else {
-                            System.out.println("It's not a weapon");
+                            //System.out.println("It's not a weapon");
                             this.inventory[inventoryCount] = this.currentLocation.items[selection];
                             inventoryCount ++;
                         }
@@ -171,7 +173,8 @@ class Player {
 
     void use(){
         // use an item from inventory as appropriate
-        System.out.println("Temp = you use");
+        System.out.println("What would you like to use?");
+        this.showInventory();
     }
 
     void fight(){
