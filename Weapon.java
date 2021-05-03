@@ -6,6 +6,7 @@ class Weapon extends Item {
         super(name,description);
         this.name = name;
         this.description = description;
+        this.isWeapon = true;
     }
 
 }

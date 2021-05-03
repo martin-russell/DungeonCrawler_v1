@@ -1,17 +1,18 @@
 import java.util.Scanner;
+import java.util.Random;
 
 class Player {
 
     Scanner sc = new Scanner(System.in);
+    Random rand = new Random();
 
     String name;
     int strength = 0;
     int intelligence = 0;
     int reflexes = 0;
     int injury = 0;
-    Item[] inventory = new Item[10];
+    Item[] inventory = new Item[14];
     int inventoryCount = 0;
-    Item[] weapons = new Weapon[4];
     int weaponCount = 0;
     int ammo = 0;
     boolean beingAttacked = false;
@@ -66,23 +67,16 @@ class Player {
     // player methods
     public void showInventory(){
         System.out.println("\nINVENTORY:");
-        for (int i = 0; i<this.inventory.length;i++){
+        for (int i = 0; i<inventoryCount;i++){
             if(this.inventory[i] == null){
                 System.out.println((i+1) + ": ....................");
             } else {
                 System.out.print((i+1) + ": ");
                 this.inventory[i].about();
             }
+
         }
-        System.out.println("\nWEAPONS:");
-        for (int i = 0; i < this.weapons.length; i++){
-            if(this.inventory[i] == null){
-                System.out.println((i+1) + ": ....................");
-            } else {
-                System.out.print((i+1) + ": ");
-                this.weapons[i].about();
-            }
-        }
+
     }
 
 
@@ -90,31 +84,49 @@ class Player {
         // move player between rooms
         System.out.println("Which direction would you like to go?");
         this.currentLocation.getExits();
-        
+
         direction = sc.next();
 
+        directMove(direction);
+
+    }
+
+    public void directMove(String direction){
         if (direction.equals("n") && this.currentLocation.doors[0] != null){
-            //TODO - implement door locking system
-            System.out.print("\nYou go north - ");
-            this.setCurrentLocation(this.currentLocation.doors[0]);
-            this.moved = true;
+            if (!this.currentLocation.doors[0].locked){
+                System.out.print("\nYou go north - ");
+                this.setCurrentLocation(this.currentLocation.doors[0]);
+                this.moved = true;
+            }else{
+                System.out.println("The door is locked");
+            }
         } else if (direction.equals("e") && this.currentLocation.doors[1] != null){
-            System.out.print("\nYou go east - ");
-            this.setCurrentLocation(this.currentLocation.doors[1]);
-            this.moved = true;
+            if(!this.currentLocation.doors[1].locked){
+                System.out.print("\nYou go east - ");
+                this.setCurrentLocation(this.currentLocation.doors[1]);
+                this.moved = true;
+            }else{
+                System.out.println("The door is locked");
+            }
         } else if (direction.equals("s") && this.currentLocation.doors[2] != null){
-            System.out.print("\nYou go south - ");
-            this.setCurrentLocation(this.currentLocation.doors[2]);
-            this.moved = true;
+            if(!this.currentLocation.doors[2].locked){
+                System.out.print("\nYou go south - ");
+                this.setCurrentLocation(this.currentLocation.doors[2]);
+                this.moved = true;
+            }else{
+                System.out.println("The door is locked");
+            }
         } else if (direction.equals("w") && this.currentLocation.doors[3] != null){
-            System.out.print("\nYou go west - ");
-            this.setCurrentLocation(this.currentLocation.doors[3]);
-            this.moved = true;
+            if(!this.currentLocation.doors[3].locked){
+                System.out.print("\nYou go west - ");
+                this.setCurrentLocation(this.currentLocation.doors[3]);
+                this.moved = true;
+            }else{
+                System.out.println("The door is locked");
+            }
         } else {
             System.out.println("\nThere is no exit in that direction");
         }
-        
-
     }
 
     public void look(){
@@ -138,14 +150,11 @@ class Player {
                     if (selection < this.currentLocation.items.length){
                         System.out.println("You pick up the " + this.currentLocation.items[selection].name);
                         // add the item to the inventory or weapons
-                        System.out.println(this.currentLocation.items[selection].getClass());
-                        if (this.currentLocation.items[selection].getClass() == Weapon.class) {
-                            //System.out.println("Its a weapon");
-                            this.weapons[weaponCount] = this.currentLocation.items[selection];
-                        } else {
-                            //System.out.println("It's not a weapon");
-                            this.inventory[inventoryCount] = this.currentLocation.items[selection];
-                            inventoryCount ++;
+                        this.inventory[inventoryCount] = this.currentLocation.items[selection];
+                        inventoryCount ++;
+                        if (this.currentLocation.items[selection].isWeapon == true){
+                            weaponCount++;
+                        }
                         }
 
                         //remove the item from the room
@@ -165,16 +174,34 @@ class Player {
                         System.out.println("That is not a valid selection");
                     }
 
-            } else { 
-                System.out.println("That is not a valid selction");
             }
         }
-    }
+    
 
     void use(){
         // use an item from inventory as appropriate
         System.out.println("What would you like to use?");
         this.showInventory();
+        if (sc.hasNextInt()){
+            int itemUse = sc.nextInt()-1;
+        }
+    }
+
+    void randomNo(){
+        String[] nopes = {
+            "I don't think that is a good idea",
+            "You could try, but it won't work",
+            "Have you no better ideas?!",
+            "I'm not saying that's a stupid idea, but... no...",
+            "Nope",
+            "That's not going to do what you think it will do",
+            "Bottom of the barrel thinking...",
+            "Let's hope no one saw that, eh?",
+            "Stupid is as stupid does...",
+            "Not sure you've thought this through",
+            "I can assure you that's not going to do anything useful"
+        };
+        System.out.println(nopes[rand.nextInt(nopes.length)]);
     }
 
     void fight(){

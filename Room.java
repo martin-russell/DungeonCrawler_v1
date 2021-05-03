@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 class Room {
 
     static String[] directions = {"[n]orth","[e]ast","[s]outh","[w]est"};
@@ -60,7 +58,7 @@ class Room {
         
         if(this.monsters.length > 0){
             for (int i = 0; i<this.monsters.length; i++){
-                System.out.println(monsters[i].describe());
+                System.out.println(ConsoleColors.RED + this.monsters[i].describe() + ConsoleColors.RESET);
             }
             System.out.println();
 
@@ -83,11 +81,14 @@ class Room {
     }
 
     void getItems(){
-        System.out.println("\nIn the room, there is:\n");
-        for (int i = 0; i < this.items.length; i++){
-            System.out.print("("+ (i+1) + ") " );
-            this.items[i].about();
-            System.out.println();
+        if (this.items.length > 0
+        ) {
+            System.out.println("\nIn the room, there is:\n");
+            for (int i = 0; i < this.items.length; i++){
+                System.out.print(ConsoleColors.YELLOW + "("+ (i+1) + ") " );
+                this.items[i].about();
+                System.out.println(ConsoleColors.RESET);
+            }
         }
     }
 

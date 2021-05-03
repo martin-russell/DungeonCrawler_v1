@@ -104,7 +104,7 @@ class Game {
                 player.moved = false;
             }
             
-            System.out.println();
+            System.out.println(ConsoleColors.CYAN);
             System.out.println("ACTIONS:");
             System.out.println("(i)  Show inventory...");
             System.out.println("(m)  Move...");
@@ -113,7 +113,7 @@ class Game {
             System.out.println("(u)  Use...");
             System.out.println("(f)  fight...");
 
-            System.out.print("\n> ");
+            System.out.print(ConsoleColors.RESET + "\n> ");
             selection = sc.next();
             
             switch (selection){
@@ -123,10 +123,16 @@ class Game {
                 case "p" : player.pickUp(); break;
                 case "u" : player.use(); break;
                 case "f" : player.fight(); break;
+                case "n" : player.directMove("n"); break;
+                case "e" : player.directMove("e"); break;
+                case "s" : player.directMove("s"); break;
+                case "w" : player.directMove("w"); break;
 
                 default : System.out.println(selection + " is not a valid choice");
             }
 
         }// end of victory loop
+
+        sc.close();
     }// end of run method
 }// end of class
